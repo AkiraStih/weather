@@ -1,10 +1,13 @@
-import { useState } from 'react';
-
+import CurrentWheaterCard from "./components/weather/CurrentWeatherCard";
 
 function App() {
-  const [count, setCount] = useState(0);
 
-  return <></>;
+  return (
+    <>
+      <button className="text-lg p-4">Click</button>
+      <CurrentWheaterCard/>
+    </>
+  );
 }
 
 export default App;
