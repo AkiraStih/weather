@@ -1,15 +1,18 @@
-import { useState } from "react";
-import { useWeatherStore } from "@store/weather.store";
+import { useState } from 'react';
+import { useWeatherStore } from '@/store/weather.store';
 
 export function SearchBar() {
-  const [city, setCity] = useState("");
-  const fetchWeather = useWeatherStore((s) => s.fetchWeather);
+  const [city, setCity] = useState('');
+  const addCity = useWeatherStore((s) => s.addCity);
 
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        if (city.trim()) fetchWeather(city.trim());
+        if (city.trim()) {
+          addCity(city.trim());
+          setCity('');
+        }
       }}
       className="flex w-139 items-center gap-3 rounded-full bg-[#2A2A2A] px-5 py-3"
     >
@@ -20,14 +23,12 @@ export function SearchBar() {
         placeholder="Search your location"
         className="w-full bg-transparent text-sm text-white placeholder-gray-500 outline-none"
       />
-      {/* визуально скрыта, но остаётся доступной для сабмита по Enter и для скринридеров */}
       <button type="submit" className="sr-only">
         Найти
       </button>
     </form>
   );
 }
-
 function SearchIcon() {
   return (
     <svg
@@ -39,7 +40,12 @@ function SearchIcon() {
       className="shrink-0 text-gray-500"
     >
       <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" />
-      <path d="M21 21L16.65 16.65" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      <path
+        d="M21 21L16.65 16.65"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }

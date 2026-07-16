@@ -1,11 +1,11 @@
-import type { RealtimeWeather } from "@/api/weather.schema";
+import type { ForecastWeather } from "@/api/weather.schema";
 
 type Unit = "C" | "F";
 
-export function getTemp(current: RealtimeWeather["current"], unit: Unit) {
+export function getTemp(current: ForecastWeather["current"], unit: Unit) {
   return unit === "C" ? current.temp_c : current.temp_f;
 }
 
-export function getFeelsLike(current: RealtimeWeather["current"], unit: Unit) {
+export function getFeelsLike(current: ForecastWeather["current"], unit: Unit) {
   return unit === "C" ? current.feelslike_c : current.feelslike_f;
 }
