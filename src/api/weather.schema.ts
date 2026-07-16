@@ -7,6 +7,8 @@ export const conditionSchema = z.object({
 export const locationSchema = z.object({
   name: z.string(),
   country: z.string(),
+  region: z.string(),
+  localtime: z.string()
 });
 
 export const currentSchema = z.object({

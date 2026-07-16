@@ -1,11 +1,12 @@
-import CurrentWheaterCard from "./components/weather/CurrentWeatherCard";
+import { SearchBar } from '@components/SearchBar';
+import CurrentWheaterCard from '@components/weather/CurrentWeatherCard';
 
 function App() {
-
   return (
     <>
-      <button className="text-lg p-4">Click</button>
-      <CurrentWheaterCard/>
+      <button className="p-4 text-lg">Click</button>
+      <SearchBar />
+      <CurrentWheaterCard />
     </>
   );
 }
