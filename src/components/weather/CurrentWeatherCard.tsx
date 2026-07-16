@@ -1,53 +1,67 @@
-import { useWeatherStore } from '@store/weather.store';
-import { getWeatherIcon } from '@utils/getWeatherIcon';
-import { getTemp, getFeelsLike } from '@utils/temperature';
+import { useActiveCity, useWeatherStore } from '@/store/weather.store';
+import { getWeatherIcon } from '@/utils/getWeatherIcon';
+import { getTemp } from '@/utils/temperature';
+import cloudy from '@/assets/weather/cloudy.svg';
 
-export default function CurrentWeatherCard() {
-  const data = useWeatherStore((s) => s.data);
-  const status = useWeatherStore((s) => s.status);
-  const error = useWeatherStore((s) => s.error);
+export function WeatherCard() {
+  const city = useActiveCity();
   const unit = useWeatherStore((s) => s.unit);
-  const toggleUnit = useWeatherStore((s) => s.toggleUnit);
+  const status = useWeatherStore((s) => s.status);
 
-  if (status === 'idle') return <p>Введите город</p>;
-  if (status === 'loading') return <p>Загрузка...</p>;
-  if (status === 'error') return <p>Ошибка: {error}</p>;
-  if (!data) return null;
+   if (status === 'loading') {
+    return (
+      <div className="flex h-56 items-center justify-center rounded-2xl bg-[#1E1E1E] p-6">
+        <img src={cloudy} alt="" />
+      </div>
+    );
+  }
 
-  const { location, current } = data;
+  if (!city) return <div className="rounded-2xl bg-[#1E1E1E] p-6">Добавьте город</div>;
+
+  const { current, location, forecast } = city.data;
+  const today = forecast.forecastday[0];
   const temp = Math.round(getTemp(current, unit));
-  const feelsLike = Math.round(getFeelsLike(current, unit));
+
+  const dateLabel = new Date(location.localtime).toLocaleDateString('en-US', {
+    weekday: 'long',
+  });
 
   return (
-    <div className="w-139 rounded-3xl bg-[#1E1E1E] p-6 text-white">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2 rounded-2xl bg-[#363636] px-4 py-2 text-sm">
-          <LocationIcon />
-          {location.name}, {location.country}
-        </div>
-
-        <button
-          type="button"
-          onClick={toggleUnit}
-          className="rounded-2xl bg-[#363636] px-3 py-2 text-sm transition-colors hover:bg-[#454545] hover:cursor-pointer"
-        >
-          {unit}°
-        </button>
+    <div className="rounded-2xl bg-[#1E1E1E] p-6">
+      <div className="flex items-center gap-2 text-sm text-gray-400">
+        <LocationIcon /> {location.name}, {location.country}
       </div>
 
       <div className="mt-4 flex items-center justify-between">
-        <img
-          src={getWeatherIcon(current.condition.code, current.is_day === 1)}
-          alt={current.condition.text}
-          className="h-28 w-28"
-        />
+        <div>
+          <h2 className="text-2xl font-bold">{dateLabel}</h2>
+          <p className="text-sm text-gray-400">{location.localtime.split(' ')[0]}</p>
+        </div>
+
         <div className="text-right">
-          <p className="text-5xl font-bold">{temp}°{unit}</p>
-          <p className="mt-1 text-sm text-gray-400">Feels like {feelsLike}°{unit}</p>
+          <p className="text-4xl font-bold">
+            {temp}°{unit}
+          </p>
+          {today && (
+            <p className="text-sm text-gray-400">
+              {Math.round(today.day.maxtemp_c)}° / {Math.round(today.day.mintemp_c)}°
+            </p>
+          )}
         </div>
       </div>
 
-      <p className="mt-4 text-lg font-semibold">{current.condition.text}</p>
+      <div className="mt-4 flex items-center gap-3">
+        <img
+          src={getWeatherIcon(current.condition.code, current.is_day)}
+          className="h-16 w-16"
+        />
+        <div>
+          <p className="font-semibold">{current.condition.text}</p>
+          <p className="text-sm text-gray-400">
+            Feels like {Math.round(current.feelslike_c)}°
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
