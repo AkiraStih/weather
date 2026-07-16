@@ -1,4 +1,3 @@
-// utils/weatherIcons.ts
 import day from '@/assets/weather/day.svg';
 import night from '@/assets/weather/night.svg';
 import cloudy from '@/assets/weather/cloudy.svg';
