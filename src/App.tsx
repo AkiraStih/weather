@@ -14,13 +14,11 @@ function App() {
         <Header />
 
         <div className="mt-6 grid grid-cols-3 gap-4">
-          {/* левая колонка — 2/3 ширины */}
           <div className="col-span-2 flex flex-col gap-4">
             <WeatherCard />
             <OtherCitiesCard />
           </div>
 
-          {/* правая колонка — 1/3 ширины */}
           <div className="col-span-1 flex flex-col gap-4">
             <HighlightsCard />
             <ForecastCard />
